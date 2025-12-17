@@ -7,7 +7,7 @@ import markdoc from "@astrojs/markdoc";
 
 
 export default defineConfig({
-  output:"hybrid",
+  output:"static",
   adapter:vercel(),
   site: "https://auroradelplata.org",
   integrations: [keystatic(), react(), markdoc()],
