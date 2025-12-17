@@ -185,62 +185,65 @@ const CATEGORY_LABEL: Record<string, string> = {
     </div>
   </div>
 
- <!-- NOVEDADES -->
-<div class="space-y-4 mb-14">
-  <div class="flex items-end justify-between gap-3">
-    <div>
-      <h2 class="text-2xl font-semibold">Novedades</h2>
-      <p class="text-sm text-white/70">Últimos artículos publicados.</p>
+  <!-- NOVEDADES -->
+  <div class="space-y-4 mb-14">
+    <div class="flex items-end justify-between gap-3">
+      <div>
+        <h2 class="text-2xl font-semibold">Novedades</h2>
+        <p class="text-sm text-white/70">Últimos artículos publicados.</p>
+      </div>
+
+      <a href="/blog" class="text-sm text-white/70 hover:text-white">
+        Ver todas →
+      </a>
     </div>
 
-    <a href="/blog" class="text-sm text-white/70 hover:text-white">
-      Ver todas →
-    </a>
+    <div class="grid gap-3 md:grid-cols-3">
+      {
+        latest.length === 0 ? (
+          <div class="md:col-span-3 rounded-2xl bg-white/5 p-5 ring-1 ring-white/10 text-sm text-white/70">
+            Todavía no hay publicaciones.
+          </div>
+        ) : (
+          latest.map((p) => {
+            const cover = resolveKeystaticAsset(p.coverImage);
+
+            return (
+              <a
+                href={`/blog/${p.slug}`}
+                class="block rounded-2xl bg-white/5 p-5 ring-1 ring-white/10 hover:bg-white/10 transition"
+              >
+                {cover && (
+                  <Image
+                    src={cover}
+                    alt={`Portada: ${p.title}`}
+                    class="mb-3 aspect-[16/9] w-full rounded-xl object-cover ring-1 ring-white/10"
+                    loading="lazy"
+                    decoding="async"
+                    sizes="(min-width: 768px) 30vw, 100vw"
+                  />
+                )}
+
+                <div class="flex flex-wrap gap-3 text-sm text-white/70">
+                  <span class="rounded-full bg-white/10 px-3 py-1 ring-1 ring-white/10">
+                    {CATEGORY_LABEL[p.category] ?? p.category}
+                  </span>
+                  {p.date ? (
+                    <span>{new Date(p.date).toLocaleDateString()}</span>
+                  ) : null}
+                </div>
+
+                <h3 class="mt-2 font-semibold">{p.title}</h3>
+                {p.excerpt ? (
+                  <p class="mt-2 text-sm text-white/70">{p.excerpt}</p>
+                ) : null}
+              </a>
+            );
+          })
+        )
+      }
+    </div>
   </div>
-
-  <div class="grid gap-3 md:grid-cols-3">
-    {
-      latest.length === 0 ? (
-        <div class="md:col-span-3 rounded-2xl bg-white/5 p-5 ring-1 ring-white/10 text-sm text-white/70">
-          Todavía no hay publicaciones.
-        </div>
-      ) : (
-        latest.map((p) => {
-          const cover = resolveKeystaticAsset(p.coverImage);
-
-          return (
-            <a
-              href={`/blog/${p.slug}`}
-              class="block rounded-2xl bg-white/5 p-5 ring-1 ring-white/10 hover:bg-white/10 transition"
-            >
-              {cover && (
-                <Image
-                  src={cover}
-                  alt={`Portada: ${p.title}`}
-                  class="mb-3 aspect-[16/9] w-full rounded-xl object-cover ring-1 ring-white/10"
-                  loading="lazy"
-                  decoding="async"
-                  sizes="(min-width: 768px) 30vw, 100vw"
-                />
-              )}
-
-              <div class="flex flex-wrap gap-3 text-sm text-white/70">
-                <span class="rounded-full bg-white/10 px-3 py-1 ring-1 ring-white/10">
-                  {CATEGORY_LABEL[p.category] ?? p.category}
-                </span>
-                {p.date ? <span>{new Date(p.date).toLocaleDateString()}</span> : null}
-              </div>
-
-              <h3 class="mt-2 font-semibold">{p.title}</h3>
-              {p.excerpt ? <p class="mt-2 text-sm text-white/70">{p.excerpt}</p> : null}
-            </a>
-          );
-        })
-      )
-    }
-  </div>
-</div>
-
 
   <!-- CTA FINAL -->
   <div
@@ -256,7 +259,7 @@ const CATEGORY_LABEL: Record<string, string> = {
     <div class="flex flex-wrap gap-2">
       <a
         class="rounded-xl bg-brand-700 hover:bg-brand-500 transition px-4 py-2 text-sm font-medium"
-        href="https://portal.auroradelplata.org"
+        href="https://aurora-del-plata-portal.vercel.app/login"
       >
         Ir al portal
       </a>
