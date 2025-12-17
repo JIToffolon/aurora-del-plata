@@ -2,16 +2,20 @@
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import WhatsAppButton from "../components/WhatsAppButton.astro";
+import { HERO } from "../lib/siteImages";
 import "../styles/global.css";
+import type { ImageMetadata } from "astro";
 
 type Props = {
   title?: string;
   description?: string;
+  ogImage?: ImageMetadata;
 };
 
 const {
   title = "Aurora del Plata",
   description = "ONG de cannabis medicinal: acompañamiento, información y tratamientos para pacientes registrados en Reprocann.",
+  ogImage = HERO.ogImage,
 } = Astro.props;
 
 const fullTitle = `${title} · Aurora del Plata`;
@@ -29,6 +33,7 @@ const fullTitle = `${title} · Aurora del Plata`;
     <!-- OpenGraph básico -->
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage.src} />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="es_AR" />
 
