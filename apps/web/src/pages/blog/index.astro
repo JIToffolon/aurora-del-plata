@@ -4,6 +4,9 @@ import { reader } from "../../lib/keystatic";
 import { resolveKeystaticAsset } from "../../lib/keystaticAssets";
 import { Image } from "astro:assets";
 
+
+export const prerender = false;
+
 const q = (Astro.url.searchParams.get("q") ?? "").trim().toLowerCase();
 const category = (Astro.url.searchParams.get("category") ?? "all").trim().toLowerCase();
 
