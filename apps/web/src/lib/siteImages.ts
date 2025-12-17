@@ -6,7 +6,7 @@ import card3 from "../assets/images/cannabi13.jpg";
 import card4 from "../assets/images/cannabi21.jpg";
 import card5 from "../assets/images/cannabi23.jpg";
 import card6 from "../assets/images/cannabi24.jpg";
-import ogImage from "../assets/images/og-image.png";
+import ogImage from "../assets/images/og-aurora.png";
 
 export const HERO = {
   home: homeHero,
