@@ -1,0 +1,271 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { reader } from "../lib/keystatic";
+import { resolveKeystaticAsset } from "../lib/keystaticAssets";
+import { HERO } from "../lib/siteImages";
+import { Image } from "astro:assets";
+
+const latest = (await reader.collections.posts.all())
+  .map(({ slug, entry }) => ({ slug, ...entry }))
+  .sort((a, b) => {
+    const da = a.date ? new Date(a.date).getTime() : 0;
+    const db = b.date ? new Date(b.date).getTime() : 0;
+    return db - da;
+  })
+  .slice(0, 3);
+
+const CATEGORY_LABEL: Record<string, string> = {
+  ciencia: "Ciencia",
+  argentina: "Argentina",
+  mundo: "Mundo",
+};
+---
+
+<BaseLayout
+  title="Home"
+  description="Aurora del Plata: ONG de cannabis medicinal. Acompañamiento, información y tratamientos para pacientes."
+>
+  <section class="space-y-14 mb-14">
+    <!-- HERO -->
+    <div class="rounded-3xl bg-white/5 ring-1 ring-white/10 overflow-hidden">
+      <div class="grid gap-8 p-8 md:grid-cols-2 md:items-center md:p-10">
+        <div class="max-w-3xl">
+          <h1 class="text-3xl md:text-4xl font-semibold tracking-tight">
+            Cannabis medicinal con acompañamiento y responsabilidad
+          </h1>
+
+          <p class="mt-4 text-white/70 text-base md:text-lg">
+            Somos una ONG que acompaña a pacientes registrados en Reprocann y
+            difundimos información clara y accesible.
+          </p>
+
+          <div class="mt-7 flex flex-wrap gap-2">
+            <a
+              class="rounded-xl bg-brand-700 hover:bg-brand-500 transition px-4 py-2 text-sm font-medium"
+              href="/contacto"
+            >
+              Contacto
+            </a>
+            <a
+              class="rounded-xl bg-white/10 hover:bg-white/15 ring-1 ring-white/10 transition px-4 py-2 text-sm"
+              href="/sobre"
+            >
+              Conocer la ONG
+            </a>
+            <a
+              class="rounded-xl bg-white/10 hover:bg-white/15 ring-1 ring-white/10 transition px-4 py-2 text-sm"
+              href="/blog"
+            >
+              Ver novedades
+            </a>
+          </div>
+        </div>
+
+        <div
+          class="rounded-2xl bg-white/5 ring-1 ring-white/10 overflow-hidden"
+        >
+          <Image
+            src={HERO.home}
+            alt="Aurora del Plata — acompañamiento en cannabis medicinal"
+            class="h-full w-full object-cover aspect-[4/3] md:aspect-[5/4] opacity-80"
+            loading="eager"
+            decoding="async"
+            priority
+            sizes="(min-width: 768px) 40vw, 100vw"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 CARDS -->
+  <div class="grid gap-4 md:grid-cols-3 mb-14 cursor-pointer">
+    {
+      [
+        {
+          title: "Acompañamiento",
+          desc: "Orientación y seguimiento para pacientes dentro del marco legal.",
+          icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+        </svg>`,
+          img: HERO.card1,
+        },
+        {
+          title: "Información",
+          desc: "Artículos, novedades y recursos sobre cannabis medicinal.",
+          icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+        </svg>`,
+          img: HERO.card2,
+        },
+        {
+          title: "Portal",
+          desc: "Gestión simple de recetas y pedidos para pacientes.",
+          icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
+        </svg>`,
+          img: HERO.card3,
+        },
+      ].map((c) => (
+        <div class="rounded-2xl bg-white/5 p-6 ring-1 ring-white/10 hover:bg-white/10 transition-colors flex flex-col items-center text-center">
+          {/* Imagen principal */}
+          <div class="relative w-full aspect-video mb-4 rounded-xl overflow-hidden">
+            <Image
+              src={c.img}
+              alt={c.title}
+              class="w-full h-full object-cover"
+            />
+          </div>
+
+          {/* Icono SVG */}
+          <div
+            class="w-12 h-12 mb-3 text-white/80 flex items-center justify-center"
+            set:html={c.icon}
+          />
+
+          {/* Contenido */}
+          <h2 class="font-semibold text-lg mb-2">{c.title}</h2>
+          <p class="text-sm text-white/70">{c.desc}</p>
+        </div>
+      ))
+    }
+  </div>
+
+  <!-- COMO FUNCIONA -->
+  <div class="space-y-4 mb-14">
+    <div class="flex items-end justify-between gap-3">
+      <div>
+        <h2 class="text-2xl font-semibold">Cómo funciona</h2>
+        <p class="text-sm text-white/70">
+          Un flujo simple para acompañar al paciente.
+        </p>
+      </div>
+    </div>
+
+    <div class="grid gap-3 md:grid-cols-3">
+      {
+        [
+          {
+            step: "1",
+            title: "Contacto",
+            desc: "Nos escribís y coordinamos la primera orientación.",
+            icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
+            </svg>`,
+          },
+          {
+            step: "2",
+            title: "Receta y pedido",
+            desc: "Cargás la receta y generás el pedido desde el portal.",
+            icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m3.75 9v6m3-3H9m1.5-12H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+            </svg>`,
+          },
+          {
+            step: "3",
+            title: "Revisión y entrega",
+            desc: "El equipo revisa el pedido y te avisamos el estado.",
+            icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
+            </svg>`,
+          },
+        ].map((s) => (
+          <div class="rounded-2xl bg-white/5 p-5 ring-1 ring-white/10 hover:bg-white/10 transition-colors flex flex-col items-center text-center gap-3 cursor-pointer">
+            <div class="mb-6">
+              <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 ring-1 ring-white/10 text-sm font-medium">
+                {s.step}
+              </span>
+            </div>
+            <div class="w-8 h-8 text-white/70" set:html={s.icon} />
+            <h3 class="font-semibold">{s.title}</h3>
+            <p class="mt-2 text-sm text-white/70">{s.desc}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+ <!-- NOVEDADES -->
+<div class="space-y-4 mb-14">
+  <div class="flex items-end justify-between gap-3">
+    <div>
+      <h2 class="text-2xl font-semibold">Novedades</h2>
+      <p class="text-sm text-white/70">Últimos artículos publicados.</p>
+    </div>
+
+    <a href="/blog" class="text-sm text-white/70 hover:text-white">
+      Ver todas →
+    </a>
+  </div>
+
+  <div class="grid gap-3 md:grid-cols-3">
+    {
+      latest.length === 0 ? (
+        <div class="md:col-span-3 rounded-2xl bg-white/5 p-5 ring-1 ring-white/10 text-sm text-white/70">
+          Todavía no hay publicaciones.
+        </div>
+      ) : (
+        latest.map((p) => {
+          const cover = resolveKeystaticAsset(p.coverImage);
+
+          return (
+            <a
+              href={`/blog/${p.slug}`}
+              class="block rounded-2xl bg-white/5 p-5 ring-1 ring-white/10 hover:bg-white/10 transition"
+            >
+              {cover && (
+                <Image
+                  src={cover}
+                  alt={`Portada: ${p.title}`}
+                  class="mb-3 aspect-[16/9] w-full rounded-xl object-cover ring-1 ring-white/10"
+                  loading="lazy"
+                  decoding="async"
+                  sizes="(min-width: 768px) 30vw, 100vw"
+                />
+              )}
+
+              <div class="flex flex-wrap gap-3 text-sm text-white/70">
+                <span class="rounded-full bg-white/10 px-3 py-1 ring-1 ring-white/10">
+                  {CATEGORY_LABEL[p.category] ?? p.category}
+                </span>
+                {p.date ? <span>{new Date(p.date).toLocaleDateString()}</span> : null}
+              </div>
+
+              <h3 class="mt-2 font-semibold">{p.title}</h3>
+              {p.excerpt ? <p class="mt-2 text-sm text-white/70">{p.excerpt}</p> : null}
+            </a>
+          );
+        })
+      )
+    }
+  </div>
+</div>
+
+
+  <!-- CTA FINAL -->
+  <div
+    class="rounded-3xl bg-white/5 p-8 ring-1 ring-white/10 flex flex-col gap-4 md:flex-row md:items-center md:justify-between"
+  >
+    <div>
+      <h2 class="text-2xl font-semibold">¿Sos paciente?</h2>
+      <p class="text-sm text-white/70">
+        Accedé al portal para cargar recetas y seguir el estado de tus pedidos.
+      </p>
+    </div>
+
+    <div class="flex flex-wrap gap-2">
+      <a
+        class="rounded-xl bg-brand-700 hover:bg-brand-500 transition px-4 py-2 text-sm font-medium"
+        href="https://portal.auroradelplata.org"
+      >
+        Ir al portal
+      </a>
+      <a
+        class="rounded-xl bg-white/10 hover:bg-white/15 ring-1 ring-white/10 transition px-4 py-2 text-sm"
+        href="/contacto"
+      >
+        Hablar con la ONG
+      </a>
+    </div>
+  </div>
+</BaseLayout>

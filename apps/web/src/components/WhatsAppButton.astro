@@ -1,0 +1,58 @@
+---
+const phone = "5491142825977"; // +54 9 11 4282 5977
+const text = encodeURIComponent("Hola! Quería hacer una consulta a Aurora del Plata.");
+const href = `https://wa.me/${phone}?text=${text}`;
+---
+
+<a
+  class="floating-wa"
+  href={href}
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label="WhatsApp"
+>
+  <img src="/wp-icon.png" alt="WhatsApp" width="28" height="28" loading="lazy" decoding="async" />
+</a>
+
+<style>
+.floating-wa{
+  position: fixed;
+  right: calc(16px + env(safe-area-inset-right, 0));
+  bottom: calc(16px + env(safe-area-inset-bottom, 0));
+  z-index: 9999;
+
+  width: 56px; height: 56px; border-radius: 999px;
+  display: flex; align-items: center; justify-content: center;
+
+  /* Fondo sutil para que el PNG destaque en cualquier sección */
+  background: rgba(37,211,102,.12);
+
+  /* Bounce suave continuo */
+  animation: wa-bounce 3s ease-in-out infinite;
+
+  transition: transform .2s ease, background .2s ease, box-shadow .2s ease;
+  will-change: transform;
+}
+.floating-wa img{
+  display:block; width:45px; height:45px;
+}
+
+/* Hover: pausa bounce y hace un leve lift */
+.floating-wa:hover{
+  animation-play-state: paused;
+  transform: translateY(-3px) scale(1.03);
+  background: rgba(37,211,102,.18);
+}
+.floating-wa:active{ transform: translateY(0) scale(.98); }
+
+/* Bouncing leve */
+@keyframes wa-bounce{
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-4px); }
+}
+
+/* Accesibilidad: reducir movimiento */
+@media (prefers-reduced-motion: reduce){
+  .floating-wa{ animation: none; transition: none; }
+}
+</style>

@@ -1,0 +1,49 @@
+---
+const nav = [
+  { href: "/", label: "Home" },
+  { href: "/sobre", label: "Sobre la ONG" },
+  { href: "/blog", label: "Blog / Novedades" },
+  { href: "/contacto", label: "Contacto" },
+];
+const pathname = Astro.url.pathname;
+---
+
+<header
+  class="sticky top-0 z-40 border-b border-white/10 bg-brand-950/80 backdrop-blur"
+>
+  <div
+    class="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between gap-4"
+  >
+    <a href="/" class="font-semibold tracking-tight"> Aurora del Plata </a>
+
+    <nav class="flex flex-wrap gap-1">
+      {
+        nav.map((item) => {
+          const active =
+            pathname === item.href ||
+            (item.href !== "/" && pathname.startsWith(item.href));
+          return (
+            <a
+              href={item.href}
+              class:list={[
+                "rounded-xl px-3 py-2 text-sm transition",
+                active
+                  ? "bg-brand-700 text-white"
+                  : "text-white/80 hover:bg-white/10 hover:text-white",
+              ]}
+            >
+              {item.label}
+            </a>
+          );
+        })
+      }
+    </nav>
+
+    <a
+      href="http://localhost:3000/login"
+      class="hidden sm:inline-flex rounded-xl bg-brand-700 hover:bg-brand-500 transition px-3 py-2 text-sm font-medium"
+    >
+      Portal pacientes
+    </a>
+  </div>
+</header>

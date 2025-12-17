@@ -1,0 +1,65 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { reader } from "../../lib/keystatic";
+import Markdoc from "@markdoc/markdoc";
+import { Image } from "astro:assets";
+import { resolveKeystaticAsset } from "../../lib/keystaticAssets";
+
+export async function getStaticPaths() {
+  const all = await reader.collections.posts.all();
+  return all.map(({ slug }) => ({ params: { slug } }));
+}
+
+const { slug } = Astro.params;
+if (!slug) throw new Error("Missing slug");
+
+const post = await reader.collections.posts.read(slug);
+if (!post) {
+  return new Response("Not found", { status: 404 });
+}
+
+const cover = resolveKeystaticAsset(post.coverImage);
+
+// 🔍 Keystatic con storage local devuelve una función async
+const { node } = await post.content();
+
+// Ahora sí transformamos el AST
+const transformed = Markdoc.transform(node, {});
+const html = Markdoc.renderers.html(transformed);
+---
+
+<BaseLayout title={post.title} description={post.excerpt ?? "Post Aurora del Plata"}>
+  <article class="space-y-6">
+    <a href="/blog" class="text-sm text-white/70 hover:text-white">← Volver</a>
+
+    <header class="space-y-3">
+      <div class="flex flex-wrap gap-3 text-sm text-white/70">
+        <span class="rounded-full bg-white/10 px-3 py-1 ring-1 ring-white/10">
+          {post.category}
+        </span>
+        {post.date ? <span>{new Date(post.date).toLocaleDateString()}</span> : null}
+      </div>
+
+      <h1 class="text-3xl font-semibold tracking-tight">{post.title}</h1>
+      {post.excerpt ? <p class="text-white/70 max-w-2xl">{post.excerpt}</p> : null}
+    </header>
+
+    {cover && (
+      <div class="rounded-3xl overflow-hidden ring-1 ring-white/10 bg-white/5">
+        <Image
+          src={cover}
+          alt={`Portada: ${post.title}`}
+          class="w-full aspect-[16/9] object-cover"
+          loading="eager"
+          decoding="async"
+          priority
+          sizes="100vw"
+        />
+      </div>
+    )}
+
+    <div class="prose prose-invert max-w-none">
+      <div set:html={html} />
+    </div>
+  </article>
+</BaseLayout>

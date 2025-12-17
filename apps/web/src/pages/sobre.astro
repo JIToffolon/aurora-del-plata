@@ -1,0 +1,194 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { Image } from "astro:assets";
+import { HERO } from "../lib/siteImages";
+---
+
+<BaseLayout
+  title="Sobre la ONG"
+  description="Aurora del Plata Cannabis Medicinal: referente en Argentina en tratamientos con cannabis medicinal, con enfoque humano y profesional."
+>
+  <section class="space-y-12">
+
+
+<!-- HERO -->
+      <div class="rounded-3xl bg-white/5 ring-1 ring-white/10 overflow-hidden">
+        <div class="grid gap-8 p-8 md:grid-cols-2 md:items-center md:p-10">
+          <div class="max-w-3xl">
+            <h1 class="text-3xl md:text-4xl font-semibold tracking-tight">
+               Aurora del Plata Cannabis Medicinal
+            </h1>
+
+            <p class="mt-4 text-white/70 text-base md:text-lg">
+               Somos un referente en Argentina en tratamientos de cannabis
+            medicinal. Nuestro equipo de expertos trabaja para ofrecer atención
+            de calidad, respondiendo a las necesidades de cada paciente con un
+            enfoque humano y profesional.
+            </p>
+
+            <div class="mt-7 flex flex-wrap gap-2">
+              <a
+                class="rounded-xl bg-brand-700 hover:bg-brand-500 transition px-4 py-2 text-sm font-medium"
+                href="/contacto"
+              >
+                Contacto
+              </a>
+              <a
+                class="rounded-xl bg-white/10 hover:bg-white/15 ring-1 ring-white/10 transition px-4 py-2 text-sm"
+                href="/blog"
+              >
+                Ver novedades
+              </a>
+            </div>
+
+          </div>
+
+          <div
+            class="rounded-2xl bg-white/5 ring-1 ring-white/10 overflow-hidden"
+          >
+            <Image
+              src={HERO.about}
+              alt="Aurora del Plata — acompañamiento en cannabis medicinal"
+              class="h-full w-full object-cover aspect-[4/3] md:aspect-[5/4] opacity-80"
+              loading="eager"
+              decoding="async"
+              priority
+              sizes="(min-width: 768px) 40vw, 100vw"
+            />
+          </div>
+        </div>
+      </div>
+
+
+   <!-- SERVICIOS -->
+<div class="space-y-4 mb-14">
+  <div>
+    <h2 class="text-2xl font-semibold">Servicios de cannabis medicinal</h2>
+    <p class="mt-2 text-sm text-white/70 max-w-3xl">
+      Ofrecemos una variedad de productos y tratamientos personalizados que
+      se adaptan a distintas condiciones de salud, siempre con la máxima
+      calidad y atención.
+    </p>
+  </div>
+
+  <div class="grid gap-4 md:grid-cols-3">
+    {
+      [
+        {
+          title: "Asesoría personalizada",
+          desc: "Brindamos asesoría individualizada para entender necesidades y condiciones de salud, asegurando un tratamiento adecuado y efectivo.",
+          img: HERO.card4, // Importá tu imagen aquí
+          icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
+          </svg>`
+        },
+        {
+          title: "Productos de calidad",
+          desc: "Productos elaborados bajo estándares estrictos para garantizar efectividad y seguridad.",
+          img: HERO.card5, // Importá tu imagen aquí
+          icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
+          </svg>`
+        },
+        {
+          title: "Educación y apoyo",
+          desc: "Información y recursos para que cada paciente tome decisiones informadas sobre su salud y bienestar.",
+          img: HERO.card6, // Importá tu imagen aquí
+          icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" />
+          </svg>`
+        },
+      ].map((c) => (
+        <div class="rounded-2xl bg-white/5 p-6 ring-1 ring-white/10 hover:bg-white/10 transition-colors flex flex-col items-center text-center cursor-pointer">
+          {/* Imagen principal */}
+          <div class="relative w-80% h-80% aspect-square mb-4 rounded-xl overflow-hidden">
+            <Image 
+              src={c.img} 
+              alt={c.title} 
+              class="w-full h-full object-cover"
+            />
+          </div>
+          
+          {/* Icono SVG */}
+          <div class="w-12 h-12 mb-3 text-white/80 flex items-center justify-center" set:html={c.icon} />
+          
+          {/* Contenido */}
+          <h3 class="font-semibold text-lg mb-2">{c.title}</h3>
+          <p class="text-sm text-white/70">{c.desc}</p>
+        </div>
+      ))
+    }
+  </div>
+</div>
+
+<!-- PRINCIPIOS -->
+<div class="rounded-3xl bg-white/5 p-8 ring-1 ring-white/10 cursor-pointer">
+  <h2 class="text-2xl font-semibold mb-6 text-center">Nuestro enfoque</h2>
+
+  <div class="grid gap-4 md:grid-cols-3">
+    {
+      [
+        {
+          title: "Humano",
+          desc: "Acompañamiento cercano, claro y empático durante el proceso.",
+          icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+          </svg>`
+        },
+        {
+          title: "Profesional",
+          desc: "Atención médica con criterios responsables y seguimiento.",
+          icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+          </svg>`
+        },
+        {
+          title: "Calidad",
+          desc: "Estándares estrictos para priorizar seguridad y efectividad.",
+          icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+          </svg>`
+        },
+      ].map((i) => (
+        <div class="rounded-2xl bg-white/5 p-6 ring-1 ring-white/10 hover:bg-white/10 transition-colors flex flex-col items-center text-center">
+          {/* Icono SVG grande */}
+          <div class="w-16 h-16 mb-4 text-white/80 flex items-center justify-center" set:html={i.icon} />
+          
+          {/* Contenido */}
+          <h3 class="font-semibold text-lg mb-2">{i.title}</h3>
+          <p class="text-sm text-white/70">{i.desc}</p>
+        </div>
+      ))
+    }
+  </div>
+</div>
+
+    <!-- CTA FINAL -->
+    <div
+      class="rounded-3xl bg-white/5 p-8 ring-1 ring-white/10 flex flex-col gap-4 md:flex-row md:items-center md:justify-between"
+    >
+      <div>
+        <h2 class="text-2xl font-semibold">¿Querés asesoramiento?</h2>
+        <p class="text-sm text-white/70 max-w-2xl">
+          Escribinos y coordinamos una primera orientación para entender tu
+          situación y ayudarte a dar el siguiente paso.
+        </p>
+      </div>
+
+      <div class="flex flex-wrap gap-2">
+        <a
+          class="rounded-xl bg-brand-700 hover:bg-brand-500 transition px-4 py-2 text-sm font-medium"
+          href="/contacto"
+        >
+          Contactar
+        </a>
+        <a
+          class="rounded-xl bg-white/10 hover:bg-white/15 ring-1 ring-white/10 transition px-4 py-2 text-sm"
+          href="https://portal.auroradelplata.org"
+        >
+          Ir al portal
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
