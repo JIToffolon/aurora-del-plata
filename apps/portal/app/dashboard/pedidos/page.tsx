@@ -3,7 +3,6 @@ import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
 
 function statusBadge(status: string) {
-  // clases soft por estado (sin hardcodear colores de Tailwind "raros")
   switch (status) {
     case "Pendiente":
       return "bg-white/10 ring-white/15 text-white/90";
@@ -73,7 +72,7 @@ export default async function PedidosPage() {
               <p className="mt-3 text-sm text-white/70 whitespace-pre-wrap">{o.notes}</p>
             ) : null}
 
-            <div className="mt-3 text-xs text-white/50 break-all">
+            <div className="mt-3 text-xs text-white/50 break-all mb-6">
               ID: {o.id}
             </div>
             <Link

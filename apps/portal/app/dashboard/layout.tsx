@@ -9,12 +9,16 @@ export default async function DashboardLayout({ children }: { children: React.Re
   if (!data?.claims) redirect("/login");
 
 
+  const userId = data.claims.sub; 
+  const {data:profile} = await supabase.from("profiles").select("role").eq("id", userId).maybeSingle();
+  const isAdmin = profile?.role === "admin";
+
   const nav= [
     { href: "/dashboard", label: "Inicio" },
     { href: "/dashboard/cargar-receta", label: "Cargar receta" },
     { href: "/dashboard/crear-pedido", label: "Crear pedido" },
     { href: "/dashboard/pedidos", label: "Mis pedidos" },
-    { href: "/admin", label: "Admin" },
+    ...(isAdmin ? [{href:"/admin",label:"Panel de Administrador"}] : []),
   ]
 
   return <AppShell title="Dashboard" nav={nav} children={children} />;

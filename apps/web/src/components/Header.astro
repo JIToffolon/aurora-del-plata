@@ -5,18 +5,17 @@ const nav = [
   { href: "/blog", label: "Blog / Novedades" },
   { href: "/contacto", label: "Contacto" },
 ];
+
 const pathname = Astro.url.pathname;
+const portalHref = "https://aurora-del-plata-portal.vercel.app/login";
 ---
 
-<header
-  class="sticky top-0 z-40 border-b border-white/10 bg-brand-950/80 backdrop-blur"
->
-  <div
-    class="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between gap-4"
-  >
-    <a href="/" class="font-semibold tracking-tight"> Aurora del Plata </a>
+<header class="sticky top-0 z-40 border-b border-white/10 bg-brand-950/80 backdrop-blur">
+  <div class="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between gap-4">
+    <a href="/" class="font-semibold tracking-tight">Aurora del Plata</a>
 
-    <nav class="flex flex-wrap gap-1">
+    <!-- Desktop nav -->
+    <nav class="hidden md:flex flex-wrap gap-1">
       {
         nav.map((item) => {
           const active =
@@ -39,11 +38,86 @@ const pathname = Astro.url.pathname;
       }
     </nav>
 
+    <!-- Desktop CTA -->
     <a
-      href="http://localhost:3000/login"
-      class="hidden sm:inline-flex rounded-xl bg-brand-700 hover:bg-brand-500 transition px-3 py-2 text-sm font-medium"
+      href={portalHref}
+      class="hidden md:inline-flex rounded-xl bg-brand-700 hover:bg-brand-500 transition px-3 py-2 text-sm font-medium"
     >
       Portal pacientes
     </a>
+
+    <!-- Mobile burger -->
+    <button
+      type="button"
+      class="md:hidden inline-flex items-center justify-center rounded-xl bg-white/10 ring-1 ring-white/10 hover:bg-white/15 transition px-3 py-2"
+      aria-label="Abrir menú"
+      aria-controls="mobile-menu"
+      aria-expanded="false"
+      data-menu-button
+    >
+      <!-- icon burger -->
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
   </div>
+
+  <!-- Mobile menu panel -->
+  <div id="mobile-menu" class="md:hidden hidden border-t border-white/10 bg-brand-950/95" data-menu>
+    <div class="mx-auto max-w-6xl px-4 py-4 space-y-2">
+      {
+        nav.map((item) => {
+          const active =
+            pathname === item.href ||
+            (item.href !== "/" && pathname.startsWith(item.href));
+          return (
+            <a
+              href={item.href}
+              class:list={[
+                "block rounded-xl px-4 py-3 text-sm transition ring-1 ring-white/10",
+                active
+                  ? "bg-brand-700 text-white"
+                  : "bg-white/5 text-white/80 hover:bg-white/10 hover:text-white",
+              ]}
+              data-menu-link
+            >
+              {item.label}
+            </a>
+          );
+        })
+      }
+
+      <a
+        href={portalHref}
+        class="mt-2 inline-flex w-full justify-center rounded-xl bg-brand-700 hover:bg-brand-500 transition px-4 py-3 text-sm font-medium"
+        data-menu-link
+      >
+        Portal pacientes
+      </a>
+    </div>
+  </div>
+
+  <script is:inline>
+    const btn = document.querySelector("[data-menu-button]");
+    const menu = document.querySelector("[data-menu]");
+    const links = document.querySelectorAll("[data-menu-link]");
+
+    function setOpen(open) {
+      menu.classList.toggle("hidden", !open);
+      btn.setAttribute("aria-expanded", open ? "true" : "false");
+    }
+
+    btn?.addEventListener("click", () => {
+      const isOpen = btn.getAttribute("aria-expanded") === "true";
+      setOpen(!isOpen);
+    });
+
+    // cerrar al navegar
+    links.forEach((a) => a.addEventListener("click", () => setOpen(false)));
+
+    // cerrar con Escape
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") setOpen(false);
+    });
+  </script>
 </header>

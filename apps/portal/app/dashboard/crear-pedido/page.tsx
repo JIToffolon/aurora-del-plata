@@ -51,19 +51,19 @@ export default function CrearPedidoPage() {
         setInfo("Para crear un pedido primero tenés que cargar una receta.");
       }
 
-      if (!prescriptionId) {
-        setError("Tenés que seleccionar una receta para crear el pedido.");
-        return;
-      }
 
 
     })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     resetMessages();
+
+    if (!prescriptionId) {
+      setError("Tenés que seleccionar una receta para crear el pedido.");
+      return;
+    }
     setCreating(true);
 
     try {
@@ -86,7 +86,6 @@ export default function CrearPedidoPage() {
         return;
       }
 
-      // UX: redirigir
       window.location.href = "/dashboard/pedidos";
     } finally {
       setCreating(false);

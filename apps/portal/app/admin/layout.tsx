@@ -28,7 +28,8 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     { href: "/admin", label: "Admin" },
     { href: "/admin/pacientes", label: "Pacientes" },
     { href: "/admin/pedidos", label: "Pedidos" },
-    { href: "/dashboard", label: "Dashboard" },
+    { href: "/dashboard", label: "Dashboard General" },
+    { href: "https://aurora-del-plata-web.vercel.app/", label: "Ir a la Web" },
   ]
 
   return <AppShell title="Admin" nav={nav} children={children} />

@@ -9,7 +9,6 @@ export default async function DashboardPage() {
 
   const user = userData.user;
 
-  // Traemos últimos pedidos (mini resumen)
   const { data: orders } = await supabase
     .from("orders")
     .select("id,status,created_at")
