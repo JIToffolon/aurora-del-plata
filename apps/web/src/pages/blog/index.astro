@@ -4,12 +4,6 @@ import { reader } from "../../lib/keystatic";
 import { resolveKeystaticAsset } from "../../lib/keystaticAssets";
 import { Image } from "astro:assets";
 
-
-export const prerender = false;
-
-const q = (Astro.url.searchParams.get("q") ?? "").trim().toLowerCase();
-const category = (Astro.url.searchParams.get("category") ?? "all").trim().toLowerCase();
-
 const all = await reader.collections.posts.all();
 
 const items = all.map(({ slug, entry }) => ({
@@ -20,15 +14,6 @@ const items = all.map(({ slug, entry }) => ({
   date: entry.date ? new Date(entry.date) : null,
   coverImage: entry.coverImage ?? null,
 }));
-
-const filtered = items.filter((p) => {
-  const catOk = category === "all" ? true : p.category === category;
-  const qOk = !q
-    ? true
-    : p.title.toLowerCase().includes(q) || p.excerpt.toLowerCase().includes(q);
-
-  return catOk && qOk;
-});
 ---
 
 <BaseLayout
@@ -36,53 +21,137 @@ const filtered = items.filter((p) => {
   description="Novedades, artículos y recursos sobre cannabis medicinal."
 >
   <section class="space-y-6">
-    <!-- header + form igual -->
+    <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+      <div>
+        <h1 class="text-2xl font-semibold">Blog / Novedades</h1>
+        <p class="text-sm text-white/70">Artículos y novedades.</p>
+      </div>
+
+      <form method="get" class="flex flex-wrap gap-2" id="blogFilterForm">
+        <select
+          name="category"
+          class="rounded-xl bg-white/5 ring-1 ring-white/10 px-3 py-2 text-sm"
+        >
+          <option value="all">Todas</option>
+          <option value="ciencia">Ciencia</option>
+          <option value="argentina">Argentina</option>
+          <option value="mundo">Mundo</option>
+        </select>
+
+        <input
+          name="q"
+          placeholder="Buscar..."
+          class="rounded-xl bg-white/5 ring-1 ring-white/10 px-3 py-2 text-sm"
+        />
+
+        <button class="rounded-xl bg-brand-700 hover:bg-brand-500 transition px-4 py-2 text-sm font-medium">
+          Filtrar
+        </button>
+
+        <a
+          href="/blog"
+          class="rounded-xl bg-white/10 hover:bg-white/15 ring-1 ring-white/10 transition px-4 py-2 text-sm"
+          id="clearBtn"
+          style="display:none"
+        >
+          Limpiar
+        </a>
+      </form>
+    </div>
 
     <div class="text-sm text-white/70">
-      Mostrando <b class="text-white">{filtered.length}</b> de <b class="text-white">{items.length}</b>
+      Mostrando <b class="text-white" id="shownCount">{items.length}</b> de{" "}
+      <b class="text-white" id="totalCount">{items.length}</b>
     </div>
 
-    <div class="grid gap-3 md:grid-cols-2">
-      {
-        filtered.length === 0 ? (
-          <div class="md:col-span-2 rounded-2xl bg-white/5 p-4 ring-1 ring-white/10 text-sm text-white/70">
-            No hay posts que coincidan.
-          </div>
-        ) : (
-          filtered.map((p) => {
-            const cover = resolveKeystaticAsset(p.coverImage);
+    <div class="grid gap-3 md:grid-cols-2" id="postsGrid">
+      {items.length === 0 ? (
+        <div class="md:col-span-2 rounded-2xl bg-white/5 p-4 ring-1 ring-white/10 text-sm text-white/70">
+          Todavía no hay publicaciones.
+        </div>
+      ) : (
+        items.map((p) => {
+          const cover = resolveKeystaticAsset(p.coverImage);
 
-            return (
-              <a
-                href={`/blog/${p.slug}`}
-                class="block rounded-2xl bg-white/5 p-5 ring-1 ring-white/10 hover:bg-white/10 transition"
-              >
-                {cover && (
-                  <Image
-                    src={cover}
-                    alt={`Portada: ${p.title}`}
-                    class="mb-3 aspect-[16/9] w-full rounded-xl object-cover ring-1 ring-white/10"
-                    loading="lazy"
-                    decoding="async"
-                    sizes="(min-width: 768px) 40vw, 100vw"
-                  />
-                )}
+          return (
+            <a
+              href={`/blog/${p.slug}`}
+              class="post-card block rounded-2xl bg-white/5 p-5 ring-1 ring-white/10 hover:bg-white/10 transition"
+              data-category={p.category}
+              data-title={p.title.toLowerCase()}
+              data-excerpt={p.excerpt.toLowerCase()}
+            >
+              {cover && (
+                <Image
+                  src={cover}
+                  alt={`Portada: ${p.title}`}
+                  class="mb-3 aspect-[16/9] w-full rounded-xl object-cover ring-1 ring-white/10"
+                  loading="lazy"
+                  decoding="async"
+                  sizes="(min-width: 768px) 40vw, 100vw"
+                />
+              )}
 
-                <div class="flex flex-wrap gap-3 text-sm text-white/70">
-                  <span class="rounded-full bg-white/10 px-3 py-1 ring-1 ring-white/10">
-                    {p.category}
-                  </span>
-                  {p.date ? <span>{p.date.toLocaleDateString()}</span> : null}
-                </div>
+              <div class="flex flex-wrap gap-3 text-sm text-white/70">
+                <span class="rounded-full bg-white/10 px-3 py-1 ring-1 ring-white/10">
+                  {p.category}
+                </span>
+                {p.date ? <span>{p.date.toLocaleDateString()}</span> : null}
+              </div>
 
-                <h2 class="mt-2 text-lg font-semibold">{p.title}</h2>
+              <h2 class="mt-2 text-lg font-semibold">{p.title}</h2>
+              {p.excerpt ? <p class="mt-2 text-sm text-white/70">{p.excerpt}</p> : null}
+            </a>
+          );
+        })
+      )}
+    </div>
 
-                {p.excerpt ? <p class="mt-2 text-sm text-white/70">{p.excerpt}</p> : null}
-              </a>
-            );
-          })
-        )
+    <div
+      id="noMatches"
+      class="hidden rounded-2xl bg-white/5 p-4 ring-1 ring-white/10 text-sm text-white/70"
+    >
+      No hay posts que coincidan.
+    </div>
+
+    <script is:inline>
+      const params = new URLSearchParams(window.location.search);
+      const q = (params.get("q") || "").trim().toLowerCase();
+      const category = (params.get("category") || "all").trim().toLowerCase();
+
+      const form = document.getElementById("blogFilterForm");
+      const qInput = form.querySelector('input[name="q"]');
+      const catSelect = form.querySelector('select[name="category"]');
+      const clearBtn = document.getElementById("clearBtn");
+
+      qInput.value = q;
+      catSelect.value = category;
+
+      if (q || category !== "all") clearBtn.style.display = "";
+
+      const cards = Array.from(document.querySelectorAll(".post-card"));
+      const shownEl = document.getElementById("shownCount");
+      const totalEl = document.getElementById("totalCount");
+      const noMatches = document.getElementById("noMatches");
+
+      totalEl.textContent = String(cards.length);
+
+      let shown = 0;
+      for (const card of cards) {
+        const c = (card.dataset.category || "").toLowerCase();
+        const t = card.dataset.title || "";
+        const e = card.dataset.excerpt || "";
+
+        const catOk = category === "all" ? true : c === category;
+        const qOk = !q ? true : t.includes(q) || e.includes(q);
+
+        const ok = catOk && qOk;
+        card.style.display = ok ? "" : "none";
+        if (ok) shown++;
       }
-    </div>
+
+      shownEl.textContent = String(shown);
+      noMatches.classList.toggle("hidden", shown !== 0);
+    </script>
   </section>
 </BaseLayout>
